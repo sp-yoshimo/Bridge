@@ -1,0 +1,177 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//プロフィール
+model Profile {
+  id     String @id @default(uuid())
+  userId String @unique
+
+  email     String
+  name      String  @db.Text
+  imageUrl  String?
+  isTeacher Boolean @default(false)
+
+  teams         Team[]
+  members       Member[]
+  Notifications Notification[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+//チーム
+model Team {
+  id String @id @default(uuid())
+
+  name             String  @db.Text
+  description      String?
+  notificate       String?
+  imageUrl         String?
+  inviteCode       String  @unique //招待コード
+  isPublishedGroup Boolean @default(false) //グループが登録されているか
+
+  // 詳細設定
+  isNotificateCreateGroup     Boolean @default(false) //グループが登録された際、自分が所属しているグループを通知するか
+  isAllowDeleteTeamForTeacher Boolean @default(false) //先生でもグループ削除を行えるようにするか
+
+  authorId String
+  author   Profile @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  members       Member[]
+  quizs         Quiz[]
+  notifications Notification[]
+  groups        Group[]
+  online        Online?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+//通知
+model Notification {
+  id      String  @id @default(uuid())
+  checked Boolean @default(false)
+  content String
+  href    String?
+
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  teamId String
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+enum MemberRole {
+  ADMIN
+  TEACHER
+  STUDENT
+}
+
+model Member {
+  id String @id @default(uuid())
+
+  role      MemberRole @default(STUDENT)
+  isGrouped Boolean    @default(false)
+
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  teamId String
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  groupId String?
+  group   Group?  @relation(fields: [groupId], references: [id])
+
+  online Online?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum OnlineStatus {
+  NONE
+  TEAM
+  GROUP
+}
+
+model Online {
+  id String @id @default(uuid())
+
+  authorId String @unique
+  author   Member @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  teamId String @unique
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  status OnlineStatus @default(NONE)
+}
+
+model Group {
+  id String @id @default(uuid())
+
+  name String
+
+  teamId String
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  members Member[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+//クイズ機能関連のモデル
+
+//クイズ(いくつかの問題を持つ)
+model Quiz {
+  id     String @id @default(uuid())
+  title  String
+  number Int?
+
+  teamId String
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  questions Question[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+//問題(いくつかの選択肢をもつ)
+model Question {
+  id       String @id @default(uuid())
+  content  String
+  position Int
+
+  choices Choice[]
+
+  quizId String
+  quiz   Quiz   @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+//問題の選択肢
+model Choice {
+  id       String  @id @default(uuid())
+  content  String
+  isCorect Boolean @default(false)
+
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
