@@ -41,7 +41,8 @@ const QuizIdPage = async({
 
     const currentmember = await db.member.findFirst({
         where:{
-            teamId: team.id
+            teamId: team.id,
+            profileId: profile.id
         }
     });
 
