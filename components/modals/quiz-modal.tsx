@@ -81,7 +81,6 @@ export const QuizModal = () => {
 
     useEffect(() => {
 
-        setIsLoading(true)
 
         //フッターのボタンのテキストの更新,問題を解いているか、その他状態変数の更新
         if (step == 1) {
