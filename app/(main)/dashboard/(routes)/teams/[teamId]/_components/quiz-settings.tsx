@@ -169,7 +169,7 @@ export const QuizSettings = ({
                     <div className=" flex flex-col">
                         <Button
                             variant={"outline"}
-                            disabled={team.online.status !== "NONE"}
+                            disabled={team.online?.status !== "NONE"}
                             onClick={() => onOpen("createQuizModal", { team })}
                         >
                             <p>
