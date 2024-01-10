@@ -8,14 +8,14 @@ import {
     AlertDialogHeader,
     AlertDialogTitle
 } from "@/components/ui/alert-dialog"
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Choice, Question } from "@prisma/client";
 import { Card } from "@/components/ui/card";
-import { ScrollArea } from "../ui/scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { Badge } from "../ui/badge";
+import { Badge } from "@/components/ui/badge";
 import { Circle, X } from "lucide-react";
 
 export const QuizModal = () => {
@@ -39,9 +39,6 @@ export const QuizModal = () => {
 
     //現在は解いているのか、それとも送信後、すなわち答えを見ている状態なのかを確認
     const [isSolving, setIsSolving] = useState(false);
-
-    //ボタン連打でページ飛ばしてしまわないようにボタンを押せるかの状態変数
-    const [isLoading, setIsLoading] = useState(false);
 
     //ユーザーの選択した選択肢Id
     const [selectedChoiceId, setSelectedChoiceId] = useState("");
@@ -99,7 +96,7 @@ export const QuizModal = () => {
 
 
             //回答を保存
-            setResults([...results, isUserCorrect])
+            setResults(prevState => [...prevState, isUserCorrect])
 
             setIsSolving(false);
             setSelectedChoiceId("");
@@ -115,7 +112,7 @@ export const QuizModal = () => {
         } else if (step % 2 == 1) {
 
             //回答を保存
-            setResults([...results, isUserCorrect])
+            setResults(prevState => [...prevState, isUserCorrect])
 
 
             setIsSolving(false);
@@ -127,16 +124,7 @@ export const QuizModal = () => {
         //現在解いているquestionオブジェクトの更新
         setQuestion(quiz?.questions[onGetQuestionIndex()]!)
 
-        //ボタン連打できないように遅延を持たせる
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 200);
-
-        return () => {
-            clearTimeout(timer)
-        }
-
-    }, [step, MAX_PAGE, isUserCorrect, onGetQuestionIndex, quiz?.questions, results])
+    }, [step, MAX_PAGE, isUserCorrect, quiz?.questions])
 
     //次のページに進む処理
     const onNext = () => {
@@ -373,7 +361,7 @@ export const QuizModal = () => {
                                     }
                                 }}
                                 className=" bg-sky-500 hover:bg-sky-600 transition"
-                                disabled={isLoading || (isSolving && selectedChoiceId === "")}
+                                disabled={(isSolving && selectedChoiceId === "")}
                             >
                                 {actionText}
                             </Button>
