@@ -50,7 +50,9 @@ const DadhboardLayout = async ({
         />
       </div>
       <div className=" h-16 fixed inset-0 top-0 backdrop-blur-lg md:bg-transparent md:backdrop-blur-0 w-full">
-        <Navbar />
+        <Navbar 
+          isNewNotificate={isNewNotificate}
+        />
       </div>
       <div className=" h-full md:pl-56 pt-16">
         {children}

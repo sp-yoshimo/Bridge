@@ -7,7 +7,11 @@ import { Menu } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Sidebar } from "./sidebar";
 
-const MobileSidebar = () => {
+const MobileSidebar = ({
+    isNewNotificate
+}:{
+    isNewNotificate: boolean
+}) => {
 
 
     //ページがマウントされたか(ハイドレーションエラーを防ぐため)
@@ -29,7 +33,9 @@ const MobileSidebar = () => {
                 </Button>
             </SheetTrigger>
             <SheetContent side="left" className=" p-0">
-                <Sidebar />
+                <Sidebar
+                    isNewNotificate={isNewNotificate}
+                />
             </SheetContent>
         </Sheet>
     )

@@ -5,7 +5,11 @@ import React from "react";
 import MobileSidebar from "./mobile-sidebar";
 import ActionIcon from "./action-icon";
 
-const Navbar = async () => {
+const Navbar = async ({
+    isNewNotificate
+}:{
+    isNewNotificate: boolean
+}) => {
 
     const { userId } = auth();
 
@@ -26,7 +30,9 @@ const Navbar = async () => {
     return (
         <div className="flex w-full justify-between items-center py-3 px-3 ">
             <div>
-                <MobileSidebar />
+                <MobileSidebar 
+                    isNewNotificate={isNewNotificate}
+                />
             </div>
             <div>
                 <ActionIcon
