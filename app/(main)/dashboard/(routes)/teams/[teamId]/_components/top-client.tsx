@@ -83,7 +83,7 @@ export const TopClient = ({
 
         }
 
-    }, [teamId])
+    }, [teamId, member.id, onOpen, profile.isTeacher, router])
 
 
     return (

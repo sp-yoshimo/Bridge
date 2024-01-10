@@ -62,6 +62,23 @@ export const QuizModal = () => {
         }
     }, [isModalOpen])
 
+
+    //現在解いている問題の配列のインデックスを取得する関数
+    const onGetQuestionIndex = () => {
+
+        let index;
+
+        //現在のstep - 1の値を2で割る。step - 1が偶数の場合、割り切れた値 - 1がインデックス。step - 1が奇数の場合、割れた値 + 余り - 1がインデックス
+        if ((step - 1) % 2 === 0) {
+            index = ((step - 1) / 2) - 1
+        } else {
+            index = (Math.floor((step - 1) / 2)) + ((step - 1) % 2) - 1
+        }
+
+        return index
+
+    }
+
     useEffect(() => {
 
         setIsLoading(true)
@@ -120,29 +137,13 @@ export const QuizModal = () => {
             clearTimeout(timer)
         }
 
-    }, [step])
+    }, [step, MAX_PAGE, isUserCorrect, onGetQuestionIndex, quiz?.questions, results])
 
     //次のページに進む処理
     const onNext = () => {
         setStep((current) => current += 1)
     }
 
-
-    //現在解いている問題の配列のインデックスを取得する関数
-    const onGetQuestionIndex = () => {
-
-        let index;
-
-        //現在のstep - 1の値を2で割る。step - 1が偶数の場合、割り切れた値 - 1がインデックス。step - 1が奇数の場合、割れた値 + 余り - 1がインデックス
-        if ((step - 1) % 2 === 0) {
-            index = ((step - 1) / 2) - 1
-        } else {
-            index = (Math.floor((step - 1) / 2)) + ((step - 1) % 2) - 1
-        }
-
-        return index
-
-    }
 
     let bodyContent: React.ReactNode;
 
@@ -316,7 +317,7 @@ export const QuizModal = () => {
                                     </div>
                                 </Card>
                             </div>
-                        ))}            
+                        ))}
                     </div>
                 </div>
             </ScrollArea>

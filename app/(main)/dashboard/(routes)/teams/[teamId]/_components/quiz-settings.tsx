@@ -7,11 +7,12 @@ import { Separator } from "@/components/ui/separator"
 import { useToast } from "@/components/ui/use-toast"
 import { useModal } from "@/hooks/use-modal"
 import { QuizincludesChildren } from "@/types"
-import { Choice, Member, Online, Question, Quiz, Team } from "@prisma/client"
+import { Choice, Member, Online,  Team } from "@prisma/client"
 import axios from "axios"
-import { FileQuestion, FolderCog, Loader2, MoreHorizontal, MoreVertical, PlayCircle, Settings, Trash } from "lucide-react"
+import { FileQuestion, FolderCog, Loader2, MoreVertical, PlayCircle, Settings, Trash } from "lucide-react"
 import { redirect, useRouter } from "next/navigation"
 import { useState } from "react"
+import QuizCard from "./quiz-card"
 
 export const QuizSettings = ({
     team,
@@ -96,29 +97,6 @@ export const QuizSettings = ({
     }
 
 
-
-
-    const onDeleteQuiz = async (quizId: string) => {
-        try {
-
-            setIsLoading(quizId)
-            await axios.delete(`/api/team/${team.id}/quiz/${quizId}`)
-            toast({
-                title: "クイズを削除しました"
-            })
-            router.refresh();
-
-        } catch (error) {
-            toast({
-                title: "エラーが発生しました",
-                variant: "destructive"
-            });
-            console.log(error);
-        } finally {
-            setIsLoading("")
-        }
-    }
-
     return (
         <div className="mb-5">
             <div className=" justify-between w-full flex items-end md:items-center">
@@ -197,127 +175,23 @@ export const QuizSettings = ({
                     <div className=" mt-5">
                         {varifiedQuizs.map((quiz: QuizincludesChildren) => {
                             return (
-                                <div key={quiz.id}>
-                                    <div className="py-3 w-full">
-
-                                        <div className="flex justify-between items-center">
-                                            <h3>
-                                                {quiz.title}
-                                            </h3>
-                                            <div className=" flex items-center gap-x-1">
-                                                <Badge
-                                                    className="bg-sky-500 hover:bg-sky-500"
-                                                >
-                                                    使用可能
-                                                </Badge>
-                                                {isLoading === quiz.id ? (
-                                                    <div>
-                                                        <Loader2 className=" animate-spin pl-1 w-4 h-4" />
-                                                    </div>
-                                                ) : (
-                                                    <DropdownMenu>
-                                                        <DropdownMenuTrigger className=" focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0 focus-visible:outline-none">
-                                                            <div className=" cursor-pointer hover:opacity-75 transition">
-                                                                <MoreVertical className=" w-4 h-4" />
-                                                            </div>
-                                                        </DropdownMenuTrigger>
-                                                        <DropdownMenuContent side="left" align="end">
-                                                            <DropdownMenuItem
-                                                                onClick={() => window.location.href = `/dashboard/teams/${team.id}/settings/quizs/${quiz.id}`}
-                                                                className=" items-center flex justify-start"
-                                                            >
-                                                                <FolderCog className=" h-4 w-4 mr-2" />
-                                                                <p>
-                                                                    詳細
-                                                                </p>
-                                                            </DropdownMenuItem>
-                                                            <DropdownMenuSeparator className=" bg-primary/20" />
-                                                            <DropdownMenuItem
-                                                                onClick={() => onOpen("QuizModal", { quiz, isPreview: true })}
-                                                                className=" items-center flex justify-start"
-                                                            >
-                                                                <PlayCircle className=" h-4 w-4 mr-2" />
-                                                                <p>
-                                                                    プレビュー
-                                                                </p>
-                                                            </DropdownMenuItem>
-                                                            <DropdownMenuSeparator className=" bg-primary/20" />
-                                                            <DropdownMenuItem
-                                                                onClick={() => { onDeleteQuiz(quiz.id) }}
-                                                                className=" text-rose-500 hover:text-rose-500 items-center flex justify-start"
-                                                            >
-                                                                <Trash className=" h-4 w-4 mr-2 text-rose-500 hover:text-rose-500" />
-                                                                <p className="text-rose-500 hover:text-rose-500">
-                                                                    削除
-                                                                </p>
-                                                            </DropdownMenuItem>
-                                                        </DropdownMenuContent>
-                                                    </DropdownMenu>
-                                                )}
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <Separator />
-                                </div>
+                                <QuizCard
+                                    quiz={quiz}
+                                    team={team}
+                                    canUse={true}
+                                    key={quiz.id}
+                                />
                             )
                         })}
                         {unVerifiedQuizs.map((quiz) => {
 
                             return (
-                                <div key={quiz.id}>
-                                    <div className="py-3 w-full">
-
-                                        <div className="flex justify-between items-center">
-                                            <h3>
-                                                {quiz.title}
-                                            </h3>
-                                            <div className=" flex items-center gap-x-1">
-                                                <Badge>
-                                                    使用できません
-                                                </Badge>
-                                                {isLoading === quiz.id ? (
-                                                    <div>
-                                                        <Loader2 className=" animate-spin pl-1 w-4 h-4" />
-                                                    </div>
-                                                ) : (
-                                                    <DropdownMenu>
-                                                        <DropdownMenuTrigger className=" focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0 focus-visible:outline-none">
-                                                            <div className=" cursor-pointer hover:opacity-75 transition">
-                                                                <MoreVertical className=" w-4 h-4" />
-                                                            </div>
-                                                        </DropdownMenuTrigger>
-                                                        <DropdownMenuContent side="left" align="end">
-                                                            <DropdownMenuItem
-                                                                onClick={() => window.location.href = `/dashboard/teams/${team.id}/settings/quizs/${quiz.id}`}
-                                                                className=" items-center flex justify-start"
-                                                            >
-                                                                <FolderCog className=" h-4 w-4 mr-2" />
-                                                                <p>
-                                                                    詳細
-                                                                </p>
-                                                            </DropdownMenuItem>
-                                                            <DropdownMenuSeparator className=" bg-primary/20" />
-                                                            <DropdownMenuItem
-                                                                onClick={() => { onDeleteQuiz(quiz.id) }}
-                                                                className=" text-rose-500 hover:text-rose-500 items-center flex justify-start"
-                                                            >
-                                                                <Trash className=" h-4 w-4 mr-2 text-rose-500 hover:text-rose-500" />
-                                                                <p className="text-rose-500 hover:text-rose-500">
-                                                                    削除
-                                                                </p>
-                                                            </DropdownMenuItem>
-                                                        </DropdownMenuContent>
-                                                    </DropdownMenu>
-                                                )}
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <Separator />
-                                </div>
+                                <QuizCard
+                                    quiz={quiz}
+                                    team={team}
+                                    canUse={false}
+                                    key={quiz.id}
+                                />
                             )
                         })}
                     </div >

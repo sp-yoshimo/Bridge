@@ -29,7 +29,7 @@ const TeamSearchBar = () => {
             router.push(`${pathname}`)
         }
 
-    }, [search])
+    }, [search, router])
 
     return (
         <form 

@@ -63,7 +63,7 @@ export const MembersClient = ({
             pusherClient.unbind("online:team", handleStartTeamOnline)
         }
 
-    }, [teamId])
+    }, [teamId, onOpen, profile.isTeacher])
 
     //それぞれのロールのメンバーを取得
     const Admin = members.filter((member) => member.role === "ADMIN");

@@ -116,7 +116,7 @@ export const SettingsClient = ({
             pusherClient.unbind("online:team", handleStartTeamOnline)
         }
 
-    }, [teamId])
+    }, [teamId, currentmember, currentmember.role, onOpen, router])
 
 
     return (

@@ -82,7 +82,7 @@ export const ChoiceCard = ({
             form.setValue("isCorrect", false);
         }
 
-    }, [choice.content, choice.isCorect])
+    }, [choice.content, choice.isCorect, form])
 
     //選択肢の更新の送信処理
     const onSubmit = async (values: formTypeScheme) => {

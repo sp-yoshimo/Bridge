@@ -36,10 +36,6 @@ export const GroupOnlineCient = ({
 }) => {
 
 
-    //team.onlineのnullの可能性をなくす
-    if (!team.online) {
-        return redirect(`/dashboard/teams/${team.id}`)
-    }
 
 
     const room = group?.id as string;
@@ -88,7 +84,7 @@ export const GroupOnlineCient = ({
                 }
             })();
         }
-    }, [currentmember.groupId, currentmember.role]);
+    }, [currentmember.groupId, currentmember.role, name, room]);
 
     //オンライン授業の状態の変化をリアルタイムに取得
     useEffect(() => {
@@ -135,7 +131,7 @@ export const GroupOnlineCient = ({
             pusherClient.unsubscribe(team.id)
         }
 
-    }, [team.id])
+    }, [team.id, currentmember.id, currentmember.role, onOpen])
 
 
     //チームモードへの移行の処理

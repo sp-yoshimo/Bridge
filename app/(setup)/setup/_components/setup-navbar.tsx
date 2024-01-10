@@ -18,12 +18,13 @@ const SetupNavbar = () => {
         setIsMounted(true)
     }, [])
 
+    const { signOut } = useClerk();
+    const router = useRouter();
+
     if (!isMounted) {
         return null;
     }
 
-    const { signOut } = useClerk();
-    const router = useRouter();
 
     return (
         <div className="  py-3 z-50 px-3 md:px-1 flex items-center max-w-7xl mx-auto justify-between ">

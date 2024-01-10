@@ -66,7 +66,7 @@ export const QuestionContentForm = ({
             form.setValue("content", question.content);
         }
 
-    }, [question.content])
+    }, [question.content, form])
 
     useEffect(() => {
         setIsEditing(false)

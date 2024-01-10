@@ -50,10 +50,6 @@ export const TeamOnlineClient = ({
     quizs
 }: TeamOnlineClientProps) => {
 
-    //team.onlineのnullの可能性をなくす
-    if (!team.online) {
-        return redirect(`/dashboard/teams/${team.id}`)
-    }
 
     const room = team.id as string;
     const name = currentmember.profile.name
@@ -93,7 +89,7 @@ export const TeamOnlineClient = ({
                 console.error(e);
             }
         })();
-    }, []);
+    }, [name, room]);
 
     //オンライン授業の状態の変化をリアルタイムに取得
     useEffect(() => {
@@ -142,7 +138,12 @@ export const TeamOnlineClient = ({
             pusherClient.unsubscribe(team.id)
         }
 
-    }, [team.id])
+    }, [team.id, currentmember, onOpen])
+
+    //team.onlineのnullの可能性をなくす
+    if (!team.online) {
+        return redirect(`/dashboard/teams/${team.id}`)
+    }
 
     if (token === "") {
         return (
