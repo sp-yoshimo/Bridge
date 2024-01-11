@@ -116,7 +116,7 @@ export async function POST(
                 data: {
                     teamId: team.id,
                     profileId: team_member.profileId,
-                    content: `${profile.isTeacher ? "先生の" : "生徒の"}の${profile.name}さんがチームに参加しました`,
+                    content: `${profile.isTeacher ? "先生の" : "生徒"}の${profile.name}さんがチームに参加しました`,
                     checked: false
                 }
             })
