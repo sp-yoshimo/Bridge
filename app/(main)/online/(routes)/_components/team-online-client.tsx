@@ -100,6 +100,8 @@ export const TeamOnlineClient = ({
 
         //オンライン授業終了をリアルタイムに検知
         const handleEndClass = (data: Online) => {
+            console.log(data);
+            
             if (data.authorId !== currentmember.id) {
                 onOpen("endOnlineModal")
             }
@@ -107,6 +109,8 @@ export const TeamOnlineClient = ({
 
         //グループモードへの移行をリアルタイムに検知
         const handleMoveGroup = (data: Online) => {
+            console.log(data);
+            
 
             const teamId = team.id;
             const member = currentmember
@@ -117,6 +121,8 @@ export const TeamOnlineClient = ({
 
         //クイズの開始をリアルタイムに検知
         const handleStartQuiz = (quiz: QuizType) => {
+            console.log(quiz);
+            
 
             //生徒にのみクイズを表示
             if (currentmember.role === "STUDENT") {
