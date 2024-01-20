@@ -37,6 +37,7 @@ const LandingNavbar = ({
                         <Button
                             variant="premium"
                             onClick={() => router.push(`/dashboard`)}
+                            className="hover:opacity-75 transition"
                         >
                             ダッシュボード
                         </Button>
