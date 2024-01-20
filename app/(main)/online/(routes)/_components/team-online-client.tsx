@@ -300,7 +300,7 @@ export const TeamOnlineClient = ({
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent>
                                             {quizs.length <= 0 && (
-                                                <div className="flex items-center justify-center">
+                                                <div className="flex items-center justify-center p-3">
                                                     <p className="text-muted-foreground text-center text-sm">
                                                         使用できるクイズがありません    
                                                     </p>    
