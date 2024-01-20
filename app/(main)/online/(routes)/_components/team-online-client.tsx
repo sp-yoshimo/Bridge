@@ -299,6 +299,13 @@ export const TeamOnlineClient = ({
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent>
+                                            {quizs.length <= 0 && (
+                                                <div className="flex items-center justify-center">
+                                                    <p className="text-muted-foreground text-center text-sm">
+                                                        使用できるクイズがありません    
+                                                    </p>    
+                                                </div>
+                                            )}
                                             {quizs.map((quiz, i) => (
                                                 <>
                                                     <DropdownMenuItem
