@@ -2,6 +2,7 @@
 
 import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
 
@@ -36,10 +37,12 @@ const LandingNavbar = ({
                     <div>
                         <Button
                             variant="premium"
-                            onClick={() => router.push(`/dashboard`)}
                             className="hover:opacity-75 transition"
+                            asChild
                         >
-                            ダッシュボード
+                            <Link href={"/dashboard"}>
+                                ダッシュボード
+                            </Link>
                         </Button>
                     </div>
                 )}
@@ -47,15 +50,17 @@ const LandingNavbar = ({
                     <div className=" flex items-center gap-x-3">
                         <Button
                             className="bg-sky-500 hover:bg-sky-500 hover:opacity-75 transition"
-                            onClick={() => router.push(`/sign-in`)}
                         >
-                            サインイン
+                            <Link href={"/sign-in"}>
+                                サインイン
+                            </Link>
                         </Button>
                         <Button
                             variant={"outline"}
-                            onClick={() => router.push(`/sign-up`)}
                         >
-                            サインアップ
+                            <Link href={"/sign-in"}>
+                                サインアップ
+                            </Link>
                         </Button>
                     </div>
                 )}
