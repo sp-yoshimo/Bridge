@@ -173,7 +173,6 @@ export async function DELETE(
         //一回すべてのメンバーをグループから削除
         await db.member.updateMany({
             where: {
-                teamId: params.teamId,
                 groupId: params.groupId
             },
             data: {
@@ -181,6 +180,8 @@ export async function DELETE(
                 groupId: null
             }
         })
+
+
 
         //グループを削除
         const deletedGroup = await db.group.delete({

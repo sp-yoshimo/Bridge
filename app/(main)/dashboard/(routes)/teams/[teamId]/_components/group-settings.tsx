@@ -29,6 +29,8 @@ export const GroupSettings = ({
     const membersWithProfile = team.members
     const groups = team.groups;
 
+  
+
     const [isLoading, setIsLoading] = useState(false);
 
     //グループ達をオンラインで使用可能か確認する必要がある

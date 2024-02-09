@@ -6,7 +6,7 @@ import { NextResponse } from "next/server"
 //グループ作成
 export async function POST(
     req: Request,
-    params: { teamId: string }
+    { params }: { params: { teamId: string } }
 ) {
     try {
 
@@ -27,17 +27,14 @@ export async function POST(
             return new NextResponse("Unauthorized", { status: 401 })
         };
 
+
         //グループ作成を行えるのはそのチームに所属しているユーザー
-        const team = await db.team.findFirst({
+        const team = await db.team.findUnique({
             where: {
                 id: params.teamId,
-                members: {
-                    some: {
-                        profileId: profile.id
-                    }
-                }
             },
         });
+
 
         if (!team) {
             return new NextResponse("Team not found", { status: 404 })
@@ -86,30 +83,30 @@ export async function POST(
 
         for (const groupMember of members) {
 
-            if(!groupMember.value){
-                return new NextResponse("Invalid data",{ status: 404 })
+            if (!groupMember.value) {
+                return new NextResponse("Invalid data", { status: 404 })
             }
 
             //まだグループに所属していないかを確認
             const one_member = await db.member.findUnique({
-                where:{
+                where: {
                     id: groupMember.value,
                     isGrouped: false
                 }
             });
 
-            if(!one_member){
-                return new NextResponse("Member not found",{ status: 404 })
+            if (!one_member) {
+                return new NextResponse("Member not found", { status: 404 })
             }
 
             //groupにメンバーを追加
             await db.group.update({
-                where:{
+                where: {
                     id: group.id,
                 },
-                data:{
-                    members:{
-                        connect:{
+                data: {
+                    members: {
+                        connect: {
                             id: one_member.id
                         }
                     }
@@ -118,10 +115,10 @@ export async function POST(
 
             //メンバーのisGroupedをtrueに
             await db.member.update({
-                where:{
+                where: {
                     id: groupMember.value
                 },
-                data:{
+                data: {
                     isGrouped: true
                 }
             })
@@ -129,7 +126,7 @@ export async function POST(
         };
 
         const updatedGroup = await db.group.findUnique({
-            where:{
+            where: {
                 id: group.id
             }
         });
