@@ -29,10 +29,10 @@ const SetupPage = async () => {
 
     return (
         <div className=" w-full h-full flex flex-col">
-            <div className="h-16 fixed top-0 backdrop-blur-md border-b w-full">
+            <div className="h-16 border-b w-full">
                 <SetupNavbar />
             </div>
-            <main className=" w-full h-full pt-36 md:pt-0 flex items-center justify-center">
+            <main className=" w-full h-full pt-10 flex items-center justify-center">
                 <div className="w-full lg:w-1/2">
                     <div className="flex flex-col items-center">
 
